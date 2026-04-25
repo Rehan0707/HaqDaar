@@ -1,193 +1,291 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portable Welfare Access System</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Cinzel:wght@400;500&family=Manrope:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg: #060606;
-        --panel: #0b0b0b;
-        --gold: #b69458;
-        --gold-soft: #8d7447;
-        --ivory: #efe8dc;
-        --text: #ddd2bf;
-        --muted: #667184;
-        --line: rgba(182, 148, 88, 0.35);
-      }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaqDaar | Portable Welfare Access System</title>
+    <meta name="description" content="Discover and access government welfare schemes across states in India seamlessly.">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Lucide Icons for dashboard -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
 
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-          radial-gradient(1200px 700px at 25% 28%, rgba(190, 143, 61, 0.18), transparent 50%),
-          linear-gradient(#070707, #040404);
-        color: var(--text);
-        font-family: "Cormorant Garamond", serif;
-      }
-
-      .wrap {
-        width: min(1400px, 92vw);
-        margin: 42px auto;
-        border: 1px solid var(--line);
-        background: linear-gradient(90deg, rgba(182, 148, 88, 0.06), rgba(7, 7, 7, 0.96) 38%);
-        display: grid;
-        grid-template-columns: 35% 65%;
-        min-height: 86vh;
-      }
-
-      .left {
-        border-right: 1px solid var(--line);
-        position: relative;
-        padding: 48px 64px;
-        background:
-          linear-gradient(
-            90deg,
-            transparent 0,
-            transparent calc(100% - 1px),
-            rgba(182, 148, 88, 0.12) calc(100% - 1px),
-            rgba(182, 148, 88, 0.12)
-          ),
-          repeating-linear-gradient(
-            90deg,
-            rgba(182, 148, 88, 0.12) 0 1px,
-            transparent 1px 64px
-          ),
-          radial-gradient(700px 420px at 50% 40%, rgba(204, 146, 42, 0.16), transparent 60%);
-      }
-
-      .problem {
-        position: absolute;
-        left: 50%;
-        top: 52%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-      }
-
-      .label {
-        margin: 0 0 28px;
-        font-family: "Manrope", sans-serif;
-        letter-spacing: 0.45em;
-        font-size: 14px;
-        color: var(--muted);
-        text-transform: uppercase;
-      }
-
-      .number {
-        margin: 0;
-        color: var(--ivory);
-        font-family: "Cinzel", serif;
-        font-size: clamp(120px, 16vw, 240px);
-        line-height: 0.9;
-      }
-
-      .label.bottom {
-        margin-top: 26px;
-        color: #9f9688;
-      }
-
-      .right {
-        padding: 78px 88px 72px;
-        position: relative;
-      }
-
-      .title {
-        margin: 28px 0 32px;
-        font-family: "Cinzel", serif;
-        color: var(--ivory);
-        font-size: clamp(44px, 6vw, 90px);
-        line-height: 1.06;
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-      }
-
-      .section-tag {
-        margin: 0 0 14px;
-        color: #6b7e95;
-        font-size: 14px;
-        font-family: "Manrope", sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 0.35em;
-      }
-
-      p {
-        margin: 0;
-        max-width: 44ch;
-        font-size: clamp(24px, 2.2vw, 52px);
-        line-height: 1.45;
-        color: var(--text);
-      }
-
-      .build {
-        margin-top: 42px;
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
-        padding: 30px 0 34px;
-        background: linear-gradient(100deg, rgba(182, 148, 88, 0.13), rgba(8, 8, 8, 0) 45%);
-      }
-
-      @media (max-width: 980px) {
-        .wrap {
-          grid-template-columns: 1fr;
-        }
-
-        .left {
-          min-height: 360px;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-
-        .right {
-          padding: 44px 30px 48px;
-        }
-
-        .problem {
-          position: static;
-          transform: none;
-          margin-top: 16px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="wrap">
-      <aside class="left">
-        <div class="problem">
-          <p class="label">Problem</p>
-          <h2 class="number">09</h2>
-          <p class="label bottom">Statement</p>
+    <!-- Navigation Bar (Hidden on Dashboard) -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="nav-logo" onclick="navigate('home')">
+                <div class="logo-icon">H</div>
+                <span>HaqDaar</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="navigate('home')" class="active">Home</a>
+                <a href="#">About</a>
+                <a href="#">Features</a>
+                <button class="btn btn-dark btn-sm" onclick="navigate('signin')">Sign In</button>
+            </div>
         </div>
-      </aside>
+    </nav>
 
-      <section class="right">
-        <p class="section-tag">Context</p>
-        <h1 class="title">Portable Welfare<br />Access System</h1>
-        <p>
-          Welfare schemes in India are largely tied to the state or district where you registered.
-          When someone migrates for work, they often lose access to benefits they're entitled to.
-          Not because they're ineligible, but because the systems don't talk to each other and
-          nobody helped them navigate the transfer. Migrant workers are already the most vulnerable
-          group. Losing welfare on top of relocation is genuinely harmful.
-        </p>
+    <!-- Page Container -->
+    <main id="app">
 
-        <div class="build">
-          <p class="section-tag">What Teams Should Build</p>
-          <p>
-            A unified access layer that lets someone find and claim their benefits regardless of
-            where they currently are. Portability without bureaucratic dead ends.
-          </p>
-        </div>
-      </section>
+        <!-- 1. HOMEPAGE -->
+        <section id="page-home" class="page">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Unified Welfare Access Layer
+                    </div>
+                    <h1>Access Your Welfare Benefits <span>Anywhere</span> in India</h1>
+                    <p>Find, transfer, and claim government schemes seamlessly across states. We bridge the gap for migrant workers.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-gold btn-lg" onclick="navigate('get-started'); renderStep();">Get Started</button>
+                        <button class="btn btn-outline btn-lg">Learn More</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-float"></div>
+                    <div class="hero-cards">
+                        <div class="hero-card hero-card-1">
+                            <span class="hc-tag portable">Portable</span>
+                            <h4 class="hc-title">PM-KISAN</h4>
+                            <p class="hc-desc">Direct income support for farmer families.</p>
+                        </div>
+                        <div class="hero-card hero-card-2">
+                            <span class="hc-tag eligible">Newly Eligible</span>
+                            <h4 class="hc-title">E-Shram Card</h4>
+                            <p class="hc-desc">Social security for unorganized workers.</p>
+                        </div>
+                        <div class="hero-card hero-card-3">
+                            <span class="hc-tag almost">Almost Eligible</span>
+                            <h4 class="hc-title">PDS Portability</h4>
+                            <p class="hc-desc">Missing: Ration Card Linkage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="features-header">
+                    <h2>Everything you need to stay covered</h2>
+                    <p>Designed for clarity, built for impact.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="search"></i></div>
+                        <h3>Discover Schemes</h3>
+                        <p>Intelligent matching based on your profile and location across all Indian states.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="refresh-cw"></i></div>
+                        <h3>Check Portability</h3>
+                        <p>Instantly know which benefits follow you when you move for work.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="map"></i></div>
+                        <h3>Step-by-Step Guidance</h3>
+                        <p>Clear instructions on how to claim and what documents you'll need.</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="footer-inner">
+                    <div class="footer-brand">
+                        <h4>HaqDaar</h4>
+                        <p>Empowering India's mobile workforce through transparent and portable welfare access.</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-col">
+                            <h5>Platform</h5>
+                            <a href="#">Schemes</a>
+                            <a href="#">Portability</a>
+                            <a href="#">Resources</a>
+                        </div>
+                        <div class="footer-col">
+                            <h5>Support</h5>
+                            <a href="#">Help Center</a>
+                            <a href="#">Contact Us</a>
+                            <a href="#">Privacy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    &copy; 2026 HaqDaar System. All rights reserved. Built for India.
+                </div>
+            </footer>
+        </section>
+
+        <!-- 2. GET STARTED (User Input Panel) -->
+        <section id="page-get-started" class="page">
+            <div class="get-started-page">
+                <div class="step-container">
+                    <div class="progress-bar">
+                        <div class="progress-step"></div>
+                        <div class="progress-step"></div>
+                        <div class="progress-step"></div>
+                        <div class="progress-step"></div>
+                        <div class="progress-step"></div>
+                        <div class="progress-step"></div>
+                    </div>
+                    <div class="step-header">
+                        <p id="step-label" class="step-label"></p>
+                        <h2 id="step-title" class="step-title"></h2>
+                    </div>
+                    <div id="step-content" class="step-content">
+                        <!-- JS injects content here -->
+                    </div>
+                    <div class="step-actions">
+                        <button id="btn-back" class="btn btn-outline" onclick="prevStep()">← Back</button>
+                        <button id="btn-next" class="btn btn-gold" onclick="nextStep()">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SIGN IN / SIGN UP -->
+        <section id="page-signin" class="page">
+            <div class="signin-page">
+                <div class="signin-left">
+                    <h2>Welcome Back</h2>
+                    <p>Securely access your saved schemes and track your portability status anywhere.</p>
+                </div>
+                <div class="signin-right">
+                    <div class="signin-form">
+                        <h2>Sign In</h2>
+                        <p class="subtitle">Enter your details to access your account</p>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" placeholder="••••••••">
+                        </div>
+                        <div class="form-footer">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                        <button class="btn btn-gold" style="width:100%; margin-top:24px;" onclick="navigate('dashboard'); renderDashboard();">Sign In</button>
+                        <div class="signin-toggle">
+                            Don't have an account? <a href="#">Create Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DASHBOARD -->
+        <section id="page-dashboard" class="page">
+            <div class="dashboard">
+                <aside class="sidebar">
+                    <div class="sidebar-logo">
+                        <div class="logo-icon">H</div>
+                        HaqDaar
+                    </div>
+                    <nav class="sidebar-nav">
+                        <a href="#" class="active"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+                        <a href="#"><i data-lucide="shield-check" class="nav-icon"></i> My Benefits</a>
+                        <a href="#"><i data-lucide="bookmark" class="nav-icon"></i> Saved Schemes</a>
+                        <a href="#"><i data-lucide="users" class="nav-icon"></i> Helper Mode</a>
+                        <a href="#"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <div class="sidebar-avatar">RK</div>
+                        <div class="sidebar-user-info">
+                            <div class="name" id="user-name"></div>
+                            <div class="role">Migrant Worker</div>
+                        </div>
+                    </div>
+                </aside>
+                <main class="dash-main">
+                    <div class="dash-header">
+                        <h1>Welfare Dashboard</h1>
+                        <div class="dash-header-right">
+                            <button class="btn btn-outline btn-sm" onclick="navigate('home')">Log Out</button>
+                        </div>
+                    </div>
+
+                    <div class="user-summary">
+                        <div class="user-info">
+                            <h3>Welcome, Ramesh Kumar</h3>
+                            <div class="states">
+                                <span id="user-home-state"></span> 
+                                <span class="arrow">→</span> 
+                                <span id="user-current-state"></span>
+                            </div>
+                        </div>
+                        <div class="user-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">08</div>
+                                <div class="stat-label">Total Schemes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">03</div>
+                                <div class="stat-label">Active</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3 Bucket System -->
+                    <div class="bucket-section">
+                        <div class="bucket-header">
+                            <div class="bucket-dot green"></div>
+                            <h2>You Won't Lose These</h2>
+                            <span class="bucket-count" id="count-portable">3</span>
+                        </div>
+                        <div class="scheme-grid" id="portable-grid"></div>
+                    </div>
+
+                    <div class="bucket-section">
+                        <div class="bucket-header">
+                            <div class="bucket-dot blue"></div>
+                            <h2>You Can Get These Here</h2>
+                            <span class="bucket-count" id="count-eligible">3</span>
+                        </div>
+                        <div class="scheme-grid" id="eligible-grid"></div>
+                    </div>
+
+                    <div class="bucket-section">
+                        <div class="bucket-header">
+                            <div class="bucket-dot yellow"></div>
+                            <h2>Almost Eligible</h2>
+                            <span class="bucket-count" id="count-almost">2</span>
+                        </div>
+                        <div class="scheme-grid" id="almost-grid"></div>
+                    </div>
+                </main>
+            </div>
+        </section>
+
     </main>
-  </body>
+
+    <!-- Scheme Detail Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <span id="modal-tag" class="hc-tag"></span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-desc" style="color:var(--text-secondary); margin-bottom:20px;"></p>
+            
+            <div class="step-guide">
+                <h3>Claim Process</h3>
+                <div id="modal-steps"></div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-gold">Save Scheme</button>
+                <button class="btn btn-outline">Share</button>
+                <button class="btn btn-outline">Download Guide</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize lucide icons if any
+        lucide.createIcons();
+    </script>
+</body>
 </html>
