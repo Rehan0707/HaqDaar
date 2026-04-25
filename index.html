@@ -11,17 +11,26 @@
 </head>
 <body>
 
-    <!-- Navigation Bar (Hidden on Dashboard) -->
     <nav class="navbar">
         <div class="navbar-inner">
-            <div class="nav-logo" onclick="navigate('home')">
-                <span>HaqDaar</span>
+            <div class="nav-left">
+                <div class="nav-logo" onclick="navigate('home')">
+                    <span>HaqDaar</span>
+                </div>
             </div>
-            <div class="nav-links">
-                <a href="#" onclick="navigate('home')" class="active">Home</a>
-                <a href="#">About</a>
-                <a href="#">Features</a>
-                <button class="btn btn-dark btn-sm" onclick="navigate('signin')">Sign In</button>
+            <div class="nav-center">
+                <div class="nav-links">
+                    <a href="#" onclick="navigate('home')" class="active" title="Home"><i data-lucide="home"></i></a>
+                    <a href="#" onclick="document.querySelector('.features').scrollIntoView({behavior: 'smooth'})" title="About"><i data-lucide="info"></i></a>
+                    <a href="#" onclick="navigate('signin')" title="Features"><i data-lucide="sparkles"></i></a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#" onclick="navigate('signin')" title="Sign In"><i data-lucide="log-in"></i></a>
+                    <a href="#" onclick="navigate('signin')" title="Sign Up"><i data-lucide="user-plus"></i></a>
+                    <a href="#" id="nav-profile" onclick="navigate('dashboard')" title="Profile" style="display: none;"><i data-lucide="user"></i></a>
+                </div>
             </div>
         </div>
     </nav>
@@ -32,6 +41,9 @@
         <!-- 1. HOMEPAGE -->
         <section id="page-home" class="page">
             <div class="hero">
+                <div class="hero-map-bg" id="india-map-wrapper">
+                    <!-- SVG loaded via JS -->
+                </div>
                 <div class="hero-content">
                     <div class="hero-badge">
                         <span class="dot"></span>
@@ -41,15 +53,14 @@
                     <p>Find, transfer, and claim government schemes seamlessly across states. We bridge the gap for migrant workers.</p>
                     <div class="hero-actions">
                         <button class="btn btn-gold btn-lg" onclick="navigate('get-started'); renderStep();">Get Started</button>
-                        <button class="btn btn-outline btn-lg">Learn More</button>
+                        <button class="btn btn-outline btn-lg" onclick="document.querySelector('.features').scrollIntoView({behavior: 'smooth'})">Learn More</button>
                     </div>
                 </div>
-
             </div>
 
             <div class="features">
                 <div class="features-header">
-                    <h2>Everything you need to stay covered</h2>
+                    <h2>How it helps</h2>
                     <p>Designed for clarity, built for impact.</p>
                 </div>
                 <div class="features-grid">
@@ -70,6 +81,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             <footer class="footer">
                 <div class="footer-inner">
@@ -183,7 +196,7 @@
                     <div class="dash-header">
                         <h1>Welfare Dashboard</h1>
                         <div class="dash-header-right">
-                            <button class="btn btn-outline btn-sm" onclick="navigate('home')">Log Out</button>
+                            <button class="btn btn-outline btn-sm" onclick="isLoggedIn=false; navigate('home')">Log Out</button>
                         </div>
                     </div>
 

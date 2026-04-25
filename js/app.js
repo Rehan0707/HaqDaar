@@ -39,6 +39,7 @@ const SCHEMES = {
 let currentPage = 'home';
 let currentStep = 1;
 const totalSteps = 6;
+let isLoggedIn = false;
 let formData = { homeState:'', currentState:'', ageGroup:'', occupation:'', income:'', documents:[] };
 
 // --- Router ---
@@ -48,12 +49,16 @@ function navigate(page) {
   if (target) {
     target.classList.add('active');
     currentPage = page;
-    if (page === 'home') {
-      document.querySelector('.navbar').style.display = '';
-    } else if (page === 'dashboard') {
+    const profileBtn = document.getElementById('nav-profile');
+    if (page === 'dashboard') {
+      isLoggedIn = true;
       document.querySelector('.navbar').style.display = 'none';
     } else {
       document.querySelector('.navbar').style.display = '';
+    }
+
+    if (profileBtn) {
+      profileBtn.style.display = isLoggedIn ? 'flex' : 'none';
     }
     window.scrollTo(0, 0);
     // Re-render icons for the new page
@@ -217,4 +222,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.querySelector('.navbar');
     if (nav) nav.style.boxShadow = window.scrollY > 10 ? 'var(--shadow-sm)' : 'none';
   });
+
+  // --- India Map: Load SVG and animate ---
+  const mapWrapper = document.getElementById('india-map-wrapper');
+  if (mapWrapper) {
+    fetch('css/india.svg')
+      .then(res => res.text())
+      .then(svgText => {
+        mapWrapper.innerHTML = svgText;
+        const paths = mapWrapper.querySelectorAll('.state-path');
+
+        // Start glow animation after a brief delay
+        setTimeout(() => {
+          paths.forEach((path, i) => {
+            setTimeout(() => {
+              path.classList.add('glow');
+            }, i * 500);
+          });
+        }, 600);
+      })
+      .catch(err => console.warn('Could not load India map SVG:', err));
+  }
 });
