@@ -1,0 +1,6 @@
+scheme_key,portability_level,portability_score,barrier_summary,mechanism_summary
+onorc_ration,HIGH,0.90,Stock depletion at FPS and higher transaction failure for migrants,Enabled via ePOS devices and Aadhaar authentication
+pm_jay_health,HIGH,0.88,Beneficiary identification issues in destination states and low awareness,Portable through empanelled hospital network
+e_shram_worker_registry,MEDIUM,0.62,Registrations plateauing and weak conversion to real benefits,National worker database but no automated portability for state-specific funds
+bocw_construction,LOW,0.30,Manual verification and state board silos make transfer difficult,Limited portability due to state-controlled welfare boards
+pm_kisan_agri,LOW,0.25,Tied to domicile and land records with strict exclusion rules,Portability constrained by local land registry dependencies

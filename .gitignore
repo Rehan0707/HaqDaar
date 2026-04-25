@@ -5,3 +5,5 @@ __pycache__/
 data/raw/
 data/processed/final_schemes.csv
 data/processed/final_schemes.json
+.env
+.ipynb_checkpoints/

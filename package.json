@@ -1,0 +1,27 @@
+{
+  "name": "haqdaar",
+  "version": "1.0.0",
+  "description": "A backend-only welfare portability API service for identifying scheme eligibility across Indian states.",
+  "main": "api/app.py",
+  "scripts": {
+    "start": "python3 -m uvicorn api.app:app --host 0.0.0.0 --port 8000",
+    "dev": "python3 -m uvicorn api.app:app --reload"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rehan0707/HaqDaar.git"
+  },
+  "keywords": [
+    "welfare",
+    "portability",
+    "api",
+    "fastapi",
+    "schemes"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rehan0707/HaqDaar/issues"
+  },
+  "homepage": "https://github.com/Rehan0707/HaqDaar#readme"
+}

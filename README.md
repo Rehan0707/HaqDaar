@@ -1,79 +1,33 @@
-# HaqDaar Data Layer
+# HaqDaar API Service
 
-This repository now includes a data-layer foundation to build a portable welfare access system.
+A portable welfare access API designed to help identify government schemes and their portability across Indian states.
 
-## What is implemented
+## Core Features (Backend Only)
 
-- Unified eligibility schema (`schemas/unified_eligibility.schema.json`)
-- Scheme registry schema (`schemas/scheme_registry.schema.json`)
-- Kaggle ingestion pipeline scaffold (`scripts/kaggle_ingest.py`)
-- Multi-source merger and canonicalizer (`scripts/merge_schemes.py`)
-- Condition normalizer (`scripts/normalize_conditions.py`)
-- Search API for eligibility + portability (`api/app.py`)
-- Source config for Kaggle datasets (`configs/kaggle_sources.csv`)
-- Source column mapping config (`configs/source_column_mappings.json`)
-- Cross-state mapping templates (`data/mappings/*.csv`)
+- **3-Bucket Logic:** Categorizes schemes into Portable (A), New State (B), and Close Matches (C).
+- **Eligibility Engine:** Standardized logic for age, income, and occupation matching.
+- **Portability Scoring:** Data-driven scoring for scheme transferability.
+- **FastAPI Documentation:** Integrated Swagger UI for testing.
 
-## Folder structure
-
-```text
-configs/                Kaggle dataset source manifest
-data/raw/               Raw downloaded files
-data/processed/         Cleaned and normalized outputs
-data/mappings/          Cross-state and category mappings
-docs/                   Notes and modeling documentation
-schemas/                JSON schemas for core entities
-scripts/                ETL scripts
-api/                    FastAPI backend
-```
-
-## Quick start
+## Quick Start
 
 1. Install dependencies:
-
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Configure Kaggle API credentials:
-
-- Generate token from Kaggle account settings.
-- Place it at `~/.kaggle/kaggle.json`.
-- Run: `chmod 600 ~/.kaggle/kaggle.json`
-
-3. Download datasets listed in the manifest:
-
+2. Run the API:
 ```bash
-python3 scripts/kaggle_ingest.py \
-  --sources configs/kaggle_sources.csv \
-  --out-dir data/raw
+npm run dev
 ```
 
-4. Normalize eligibility conditions:
+The API will be available at `http://127.0.0.1:8000`. 
+Access the documentation at `http://127.0.0.1:8000/docs`.
 
-```bash
-python3 scripts/normalize_conditions.py \
-  --input data/raw/scheme_registry_raw.csv \
-  --output data/processed/scheme_registry_normalized.jsonl
-```
+## Endpoints
 
-5. Merge all source datasets into one canonical file:
-
-```bash
-python3 scripts/merge_schemes.py \
-  --raw-dir data/raw \
-  --mapping-config configs/source_column_mappings.json \
-  --output-csv data/processed/final_schemes.csv \
-  --output-json data/processed/final_schemes.json
-```
-
-6. Run backend API:
-
-```bash
-uvicorn api.app:app --reload
-```
+- `POST /schemes/search`: Main search endpoint for welfare discovery.
+- `GET /health`: System health check.
 
 Then call:
 
@@ -90,6 +44,18 @@ curl -X POST http://127.0.0.1:8000/schemes/search \
     "age": 29
   }'
 ```
+
+Response rows now include:
+
+- `portability_level` (`HIGH`/`MEDIUM`/`LOW`/`UNKNOWN`)
+- `portability_score` (`0.0` to `1.0`)
+- `barrier_summary`
+- `mechanism_summary`
+
+Mongo logging behavior:
+
+- If `motor` is installed and MongoDB is reachable at `mongodb://localhost:27017/`, searches are logged.
+- If Mongo is unavailable, API still works with CSV data (logging is skipped).
 
 ## Data model goals
 
