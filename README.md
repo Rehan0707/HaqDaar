@@ -12,6 +12,7 @@ This repository now includes a data-layer foundation to build a portable welfare
 - Search API for eligibility + portability (`api/app.py`)
 - Source config for Kaggle datasets (`configs/kaggle_sources.csv`)
 - Source column mapping config (`configs/source_column_mappings.json`)
+- Portability baseline scoring file (`data/processed/portability_baseline.csv`)
 - Cross-state mapping templates (`data/mappings/*.csv`)
 
 ## Folder structure
@@ -90,6 +91,13 @@ curl -X POST http://127.0.0.1:8000/schemes/search \
     "age": 29
   }'
 ```
+
+Response rows now include:
+
+- `portability_level` (`HIGH`/`MEDIUM`/`LOW`/`UNKNOWN`)
+- `portability_score` (`0.0` to `1.0`)
+- `barrier_summary`
+- `mechanism_summary`
 
 ## Data model goals
 
