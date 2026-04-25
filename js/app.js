@@ -18,28 +18,12 @@ const OCCUPATIONS = [
 const INCOME_RANGES = ["Below ₹1 Lakh","₹1-3 Lakh","₹3-5 Lakh","₹5-8 Lakh","Above ₹8 Lakh"];
 const DOCUMENTS = ["Aadhaar Card","Ration Card","Voter ID","PAN Card","Bank Account","Labour Card","BPL Certificate","Domicile Certificate"];
 
-const SCHEMES = {
-  portable: [
-    {name:"PM-KISAN",desc:"Direct income support of ₹6000/year for farmer families",tag:"Portable",docs:"Aadhaar, Bank Account, Land Records",time:"2-3 weeks",where:"Common Service Centre or online portal"},
-    {name:"Ayushman Bharat (PM-JAY)",desc:"Health coverage of ₹5 lakh/year per family for hospitalization",tag:"Portable",docs:"Aadhaar, Ration Card",time:"Immediate after verification",where:"Any empanelled hospital nationwide"},
-    {name:"PM Ujjwala Yojana",desc:"Free LPG connection for women from BPL households",tag:"Portable",docs:"Aadhaar, BPL Certificate",time:"1-2 weeks",where:"Local LPG distributor"},
-  ],
-  newlyEligible: [
-    {name:"E-Shram Card",desc:"Social security registration for unorganized workers",tag:"Newly Eligible",docs:"Aadhaar, Bank Account, Mobile",time:"Instant (online)",where:"e-Shram portal or CSC"},
-    {name:"State Labour Welfare Fund",desc:"Financial assistance for registered construction workers",tag:"Newly Eligible",docs:"Labour Card, Aadhaar, Bank Account",time:"3-4 weeks",where:"Labour Department office"},
-    {name:"One Nation One Ration Card",desc:"Access PDS benefits at any Fair Price Shop across India",tag:"Newly Eligible",docs:"Ration Card, Aadhaar (seeded)",time:"Already active if Aadhaar linked",where:"Any Fair Price Shop"},
-  ],
-  almostEligible: [
-    {name:"PM Awas Yojana",desc:"Subsidy for housing construction or purchase",tag:"Almost Eligible",missing:"Missing: Domicile Certificate in current state",docs:"Aadhaar, Income Certificate, Land Docs",time:"6-12 months",where:"Municipal/Panchayat office"},
-    {name:"Skill India Mission",desc:"Free vocational training with certification",tag:"Almost Eligible",missing:"Missing: Age proof (must be under 45)",docs:"Aadhaar, Education Certificate",time:"Enrollment-based",where:"Nearest PMKVY Training Centre"},
-  ]
-};
-
 // --- App State ---
 let currentPage = 'home';
 let currentStep = 1;
 const totalSteps = 6;
-let formData = { homeState:'', currentState:'', ageGroup:'', occupation:'', income:'', documents:[] };
+let formData = { name: 'Ramesh Kumar', homeState:'', currentState:'', ageGroup:'', occupation:'', income:'', documents:[] };
+let apiResults = null;
 
 // --- Router ---
 function navigate(page) {
@@ -56,7 +40,6 @@ function navigate(page) {
       document.querySelector('.navbar').style.display = '';
     }
     window.scrollTo(0, 0);
-    // Re-render icons for the new page
     if (window.lucide) lucide.createIcons();
   }
 }
@@ -67,17 +50,14 @@ function renderStep() {
   const label = document.getElementById('step-label');
   const title = document.getElementById('step-title');
   
-  // Update progress bar
   document.querySelectorAll('.progress-step').forEach((s, i) => {
     s.classList.remove('active', 'done');
     if (i + 1 === currentStep) s.classList.add('active');
     if (i + 1 < currentStep) s.classList.add('done');
   });
 
-  // Update back button
   document.getElementById('btn-back').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
   
-  // Update next button text
   const nextBtn = document.getElementById('btn-next');
   nextBtn.textContent = currentStep === totalSteps ? 'View Results →' : 'Next →';
 
@@ -88,8 +68,7 @@ function renderStep() {
       content.innerHTML = `<div class="select-wrap"><select id="home-state" onchange="formData.homeState=this.value">
         <option value="">Select your home state</option>
         ${STATES.map(s => `<option value="${s}" ${formData.homeState===s?'selected':''}>${s}</option>`).join('')}
-      </select></div>
-      <p style="font-size:0.88rem;color:var(--text-muted);margin-top:12px;">This is the state where you originally registered for benefits.</p>`;
+      </select></div>`;
       break;
     case 2:
       label.textContent = 'Step 2 of 6';
@@ -140,9 +119,41 @@ function toggleDoc(doc) {
   renderStep();
 }
 
-function nextStep() {
+async function nextStep() {
   if (currentStep < totalSteps) { currentStep++; renderStep(); }
-  else { navigate('dashboard'); renderDashboard(); }
+  else { 
+    await fetchWelfareData();
+    navigate('dashboard'); 
+    renderDashboard(); 
+  }
+}
+
+async function fetchWelfareData() {
+  const stateMapping = {
+    "Bihar": "BR", "Maharashtra": "MH", "Uttar Pradesh": "UP", "Goa": "GA", "Gujarat": "GJ", "Karnataka": "KA"
+  };
+
+  const payload = {
+    name: formData.name,
+    age: parseInt(formData.ageGroup.split('-')[0]) || 30,
+    old_state: stateMapping[formData.homeState] || "BR",
+    new_state: stateMapping[formData.currentState] || "MH",
+    occupation: formData.occupation.toLowerCase(),
+    annual_income: formData.income.includes('Below') ? 80000 : 250000,
+    gender: "ANY"
+  };
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000/schemes/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    apiResults = await res.json();
+  } catch (e) {
+    console.error("API Error:", e);
+    alert("Backend not responding. Showing demo data.");
+  }
 }
 
 function prevStep() {
@@ -151,49 +162,50 @@ function prevStep() {
 
 // --- Dashboard ---
 function renderDashboard() {
-  const home = formData.homeState || 'Bihar';
-  const current = formData.currentState || 'Maharashtra';
-  document.getElementById('user-home-state').textContent = home;
-  document.getElementById('user-current-state').textContent = current;
-  document.getElementById('user-name').textContent = 'Ramesh Kumar';
+  if (!apiResults) return;
+
+  document.getElementById('user-home-state').textContent = formData.homeState || 'Bihar';
+  document.getElementById('user-current-state').textContent = formData.currentState || 'Maharashtra';
+  document.getElementById('user-name').textContent = formData.name;
   
-  renderBucket('portable-grid', SCHEMES.portable, 'portable');
-  renderBucket('eligible-grid', SCHEMES.newlyEligible, 'eligible');
-  renderBucket('almost-grid', SCHEMES.almostEligible, 'almost');
+  renderBucket('portable-grid', apiResults.buckets.bucket_a, 'portable');
+  renderBucket('eligible-grid', apiResults.buckets.bucket_b, 'eligible');
+  renderBucket('almost-grid', apiResults.buckets.bucket_c, 'almost');
   
-  // Update icons in dynamic content
   if (window.lucide) lucide.createIcons();
 }
 
 function renderBucket(containerId, schemes, type) {
   const container = document.getElementById(containerId);
   const tagClass = type === 'portable' ? 'portable' : type === 'eligible' ? 'eligible' : 'almost';
+  const tagLabel = type === 'portable' ? 'Carry Forward' : type === 'eligible' ? 'Claim Locally' : 'Almost There';
+  
   container.innerHTML = schemes.map((s, i) => `
     <div class="scheme-card" onclick="openModal('${type}',${i})">
-      <span class="hc-tag ${tagClass}">${s.tag}</span>
-      <h4>${s.name}</h4>
-      <p>${s.desc}</p>
-      ${s.missing ? `<p style="color:#D97706;font-size:0.82rem;font-weight:500;">⚠ ${s.missing}</p>` : ''}
+      <span class="hc-tag ${tagClass}">${tagLabel}</span>
+      <h4>${s.scheme_name}</h4>
+      <p>${s.description ? s.description.substring(0, 80) + '...' : 'Access welfare benefits.'}</p>
       <div class="card-action">View Details <span>→</span></div>
     </div>
-  `).join('');
+  `).join('') || '<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:20px;">No schemes found in this category.</p>';
 }
 
 // --- Modal ---
 function openModal(type, index) {
-  const lists = { portable: SCHEMES.portable, eligible: SCHEMES.newlyEligible, almost: SCHEMES.almostEligible };
-  const scheme = lists[type][index];
+  const buckets = { portable: 'bucket_a', eligible: 'bucket_b', almost: 'bucket_c' };
+  const scheme = apiResults.buckets[buckets[type]][index];
   const tagClass = type === 'portable' ? 'portable' : type === 'eligible' ? 'eligible' : 'almost';
+  const tagLabel = type === 'portable' ? 'Carry Forward' : type === 'eligible' ? 'Claim Locally' : 'Almost There';
   
-  document.getElementById('modal-title').textContent = scheme.name;
+  document.getElementById('modal-title').textContent = scheme.scheme_name;
   document.getElementById('modal-tag').className = 'hc-tag ' + tagClass;
-  document.getElementById('modal-tag').textContent = scheme.tag;
-  document.getElementById('modal-desc').textContent = scheme.desc;
+  document.getElementById('modal-tag').textContent = tagLabel;
+  document.getElementById('modal-desc').textContent = scheme.description;
   
   document.getElementById('modal-steps').innerHTML = `
-    <div class="step-guide-item"><div class="step-num">1</div><div><h4>Where to Apply</h4><p>${scheme.where}</p></div></div>
-    <div class="step-guide-item"><div class="step-num">2</div><div><h4>Documents Needed</h4><p>${scheme.docs}</p></div></div>
-    <div class="step-guide-item"><div class="step-num">3</div><div><h4>Expected Time</h4><p>${scheme.time}</p></div></div>
+    <div class="step-guide-item"><div class="step-num">1</div><div><h4>How to Apply</h4><p>${scheme.application_steps[1] || 'Visit nearest CSC'}</p></div></div>
+    <div class="step-guide-item"><div class="step-num">2</div><div><h4>Documents Needed</h4><p>${scheme.required_documents.join(', ')}</p></div></div>
+    <div class="step-guide-item"><div class="step-num">3</div><div><h4>Expected Time</h4><p>${scheme.time_estimate}</p></div></div>
   `;
   
   document.getElementById('modal-overlay').classList.add('active');
@@ -206,15 +218,7 @@ function closeModal() {
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
   navigate('home');
-  
-  // Close modal on overlay click
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal();
-  });
-  
-  // Navbar scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('.navbar');
-    if (nav) nav.style.boxShadow = window.scrollY > 10 ? 'var(--shadow-sm)' : 'none';
   });
 });
