@@ -4,8 +4,8 @@
   "description": "A backend-only welfare portability API service for identifying scheme eligibility across Indian states.",
   "main": "api/app.py",
   "scripts": {
-    "start": "python3 -m uvicorn api.app:app --host 0.0.0.0 --port 8000",
-    "dev": "python3 -m uvicorn api.app:app --reload"
+    "start": "./.venv/bin/python -m uvicorn api.app:app --host 0.0.0.0 --port 8000",
+    "dev": "./.venv/bin/python -m uvicorn api.app:app --reload"
   },
   "repository": {
     "type": "git",

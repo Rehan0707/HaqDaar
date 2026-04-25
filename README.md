@@ -1,35 +1,60 @@
-# HaqDaar API Service
+# HaqDaar - Portable Welfare Access System
 
-A portable welfare access API designed to help identify government schemes and their portability across Indian states.
+HaqDaar is a unified welfare access layer for migrant workers in India. It helps users find and claim schemes across states, even after relocation, with clear guidance and low-literacy-friendly UX.
 
-## Core Features (Backend Only)
+## What this MVP includes
 
-- **3-Bucket Logic:** Categorizes schemes into Portable (A), New State (B), and Close Matches (C).
-- **Eligibility Engine:** Standardized logic for age, income, and occupation matching.
-- **Portability Scoring:** Data-driven scoring for scheme transferability.
-- **FastAPI Documentation:** Integrated Swagger UI for testing.
+- **3-bucket welfare matching**
+  - `bucket_a`: benefits that can be carried forward (portable)
+  - `bucket_b`: benefits claimable in the current state
+  - `bucket_c`: close matches that are almost eligible
+- **Cross-state discovery endpoint**
+  - Recommends additional schemes users may not know they qualify for
+- **Claim-readiness guidance**
+  - Required documents, missing documents, claim channel, and estimated timeline
+- **Accessibility-focused frontend**
+  - Multi-step guided flow
+  - Simple language toggle
+  - Read-aloud dashboard summary (browser speech)
 
-## Quick Start
+## Project structure
 
-1. Install dependencies:
+- `api/app.py` - FastAPI backend with eligibility, portability, and discovery logic
+- `index.html` + `js/app.js` + `css/styles.css` - frontend app
+- `data/processed/portability_baseline.csv` - portability metadata
+- `data/processed/final_schemes.csv` - optional full dataset (if available)
+
+If `final_schemes.csv` is not present, the API now uses a built-in fallback demo dataset so the system runs out of the box.
+
+## Quick start
+
+1. Install Python dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Run the API:
+2. Run backend:
+
 ```bash
 npm run dev
 ```
 
-The API will be available at `http://127.0.0.1:8000`. 
-Access the documentation at `http://127.0.0.1:8000/docs`.
+3. Open frontend:
 
-## Endpoints
+- Open `index.html` in a browser (or serve the root directory with any static server).
 
-- `POST /schemes/search`: Main search endpoint for welfare discovery.
-- `GET /health`: System health check.
+Backend runs on `http://127.0.0.1:8000` with docs at `http://127.0.0.1:8000/docs`.
 
-Then call:
+## API endpoints
+
+- `GET /health` - health check
+- `POST /schemes/search` - primary bucketed welfare match
+- `POST /schemes/discover` - additional recommended schemes
+- `POST /auth/google` - Google token verification for sign-in
+- `GET /auth/google/config` - frontend Google auth configuration check
+
+## Example request
 
 ```bash
 curl -X POST http://127.0.0.1:8000/schemes/search \
@@ -41,29 +66,12 @@ curl -X POST http://127.0.0.1:8000/schemes/search \
     "occupation": "construction",
     "social_category": "OBC",
     "gender": "ANY",
-    "age": 29
+    "age": 29,
+    "available_documents": ["Aadhaar Card", "Bank Account Details"]
   }'
 ```
 
-Response rows now include:
+## Notes
 
-- `portability_level` (`HIGH`/`MEDIUM`/`LOW`/`UNKNOWN`)
-- `portability_score` (`0.0` to `1.0`)
-- `barrier_summary`
-- `mechanism_summary`
-
-Mongo logging behavior:
-
-- If `motor` is installed and MongoDB is reachable at `mongodb://localhost:27017/`, searches are logged.
-- If Mongo is unavailable, API still works with CSV data (logging is skipped).
-
-## Data model goals
-
-- Central vs State scheme classification with portability behavior.
-- Unified eligibility rules that support structured condition evaluation.
-- Cross-state continuation and equivalent-scheme lookup.
-
-## Next immediate step
-
-Populate `configs/kaggle_sources.csv` with real Kaggle dataset IDs, run ingestion, then run `merge_schemes.py`.
-# HaqDaar
+- Mongo logging is optional. If MongoDB is unreachable, search still works.
+- For production-grade coverage, ingest and merge real datasets into `final_schemes.csv` using scripts in `scripts/`.
