@@ -5,3 +5,9 @@ __pycache__/
 data/raw/
 data/processed/final_schemes.csv
 data/processed/final_schemes.json
+node_modules/
+generate_map.js
+india.svg
+css/india-map.svg
+package.json
+package-lock.json
