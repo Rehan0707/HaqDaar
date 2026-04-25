@@ -1,0 +1,4 @@
+source_id,kaggle_dataset_id,file_pattern,jurisdiction_type,state_code,priority,notes
+central_schemes_placeholder,owner_name/central-gov-welfare-schemes,*.csv,CENTRAL,,1,Replace with real Kaggle dataset ID
+bihar_state_schemes_placeholder,owner_name/bihar-welfare-schemes,*.csv,STATE,BR,1,Replace with real Kaggle dataset ID
+maharashtra_state_schemes_placeholder,owner_name/maharashtra-welfare-schemes,*.csv,STATE,MH,1,Replace with real Kaggle dataset ID

@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haqdaar.local/schemas/unified_eligibility.schema.json",
+  "title": "Unified Eligibility Rule",
+  "type": "object",
+  "required": [
+    "rule_id",
+    "scheme_id",
+    "jurisdiction_type",
+    "conditions",
+    "effective_from",
+    "source"
+  ],
+  "properties": {
+    "rule_id": {
+      "type": "string",
+      "description": "Unique ID for an eligibility rule record"
+    },
+    "scheme_id": {
+      "type": "string",
+      "description": "Foreign key into scheme registry"
+    },
+    "jurisdiction_type": {
+      "type": "string",
+      "enum": ["CENTRAL", "STATE"]
+    },
+    "state_code": {
+      "type": ["string", "null"],
+      "description": "Required for STATE schemes, null for CENTRAL"
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["field", "operator", "value"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "annual_income",
+              "monthly_income",
+              "social_category",
+              "occupation",
+              "gender",
+              "age",
+              "residency_state",
+              "residency_district",
+              "disability_status",
+              "land_holding_acres",
+              "bpl_status",
+              "ration_card_type"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["<", "<=", ">", ">=", "=", "!=", "IN", "NOT_IN", "EXISTS"]
+          },
+          "value": {
+            "description": "Scalar or array depending on operator"
+          },
+          "value_type": {
+            "type": "string",
+            "enum": ["number", "string", "boolean", "array"],
+            "default": "string"
+          },
+          "logical_group": {
+            "type": "string",
+            "default": "AND_GROUP_1",
+            "description": "Conditions in the same group are AND-ed; groups are OR-ed"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "benefit_type": {
+      "type": "string",
+      "enum": ["cash_transfer", "subsidy", "housing", "insurance", "ration", "other"],
+      "default": "other"
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "effective_to": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "source": {
+      "type": "object",
+      "required": ["source_type", "source_name"],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": ["kaggle", "gov_portal", "manual"]
+        },
+        "source_name": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "ingested_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "jurisdiction_type": { "const": "STATE" }
+        }
+      },
+      "then": {
+        "required": ["state_code"],
+        "properties": {
+          "state_code": { "type": "string", "minLength": 2 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

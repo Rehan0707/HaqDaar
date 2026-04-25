@@ -1,0 +1,4 @@
+scheme_id,scheme_name,scheme_short_name,jurisdiction_type,state_code,portability_type,benefit_domain,status,source_type,source_name,source_url,version
+CENTRAL_PMAY,Pradhan Mantri Awas Yojana,PMAY,CENTRAL,,FULLY_PORTABLE,housing,active,kaggle,central_schemes_dataset,,v1
+BR_STATE_HOUSING_SUPPORT,Bihar State Housing Support,,STATE,BR,NOT_PORTABLE_EQUIVALENT_REQUIRED,housing,active,kaggle,bihar_state_schemes_dataset,,v1
+MH_STATE_HOUSING_ASSIST,Maharashtra State Housing Assistance,,STATE,MH,PORTABLE_WITH_TRANSFER,housing,active,kaggle,maharashtra_state_schemes_dataset,,v1

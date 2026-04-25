@@ -1,0 +1,2 @@
+source_scheme_id,source_scheme_name,source_state_code,target_state_code,target_scheme_id,target_scheme_name,mapping_type,confidence_score,continuation_steps,notes,last_reviewed_on
+BR_STATE_PMAWAS,PM Awas Yojana (State Linked),BR,MH,MH_STATE_HOUSING_ASSIST,State Housing Assistance,equivalent,0.60,"1) Verify identity 2) Submit migration proof 3) Apply in destination portal",Template example row,2026-04-25

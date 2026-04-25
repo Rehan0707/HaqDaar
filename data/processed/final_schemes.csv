@@ -1,0 +1,5 @@
+scheme_id,scheme_name,description,jurisdiction_type,state_code,category,annual_income_limit,occupations,social_categories,gender,age_min,age_max,is_portable,portability_type,source_dataset,source_file
+STATE_BR_bihar_ration_support,Bihar Ration Support,Food support for low income families,STATE,BR,Food,200000.0,agriculture,OBC|SC,,18,70,False,NOT_PORTABLE_EQUIVALENT_REQUIRED,indian_gov_schemes_2025,schemes.csv
+STATE_MH_maharashtra_housing_assist,Maharashtra Housing Assist,Housing subsidy after migration,STATE,MH,housing,350000.0,construction,SC|ST|OBC,,18,65,True,PORTABLE_WITH_TRANSFER,indian_welfare_schemes,welfare.csv
+CENTRAL_ALL_national_health_protection,National Health Protection,Primary health coverage,CENTRAL,ALL,health,500000.0,all,all,,0,120,True,FULLY_PORTABLE,indian_welfare_schemes,welfare.csv
+CENTRAL_ALL_pm_awas_yojana,PM Awas Yojana,Affordable housing support,CENTRAL,ALL,Housing,300000.0,construction,SC|ST|OBC,,18,65,True,FULLY_PORTABLE,indian_gov_schemes_2025,schemes.csv

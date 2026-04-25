@@ -1,0 +1,37 @@
+state_code,state_name,jurisdiction
+AN,Andaman and Nicobar Islands,UT
+AP,Andhra Pradesh,STATE
+AR,Arunachal Pradesh,STATE
+AS,Assam,STATE
+BR,Bihar,STATE
+CG,Chhattisgarh,STATE
+CH,Chandigarh,UT
+DN,Dadra and Nagar Haveli and Daman and Diu,UT
+DL,Delhi,UT
+GA,Goa,STATE
+GJ,Gujarat,STATE
+HP,Himachal Pradesh,STATE
+HR,Haryana,STATE
+JH,Jharkhand,STATE
+JK,Jammu and Kashmir,UT
+KA,Karnataka,STATE
+KL,Kerala,STATE
+LA,Ladakh,UT
+LD,Lakshadweep,UT
+MH,Maharashtra,STATE
+ML,Meghalaya,STATE
+MN,Manipur,STATE
+MP,Madhya Pradesh,STATE
+MZ,Mizoram,STATE
+NL,Nagaland,STATE
+OD,Odisha,STATE
+PB,Punjab,STATE
+PY,Puducherry,UT
+RJ,Rajasthan,STATE
+SK,Sikkim,STATE
+TN,Tamil Nadu,STATE
+TR,Tripura,STATE
+TS,Telangana,STATE
+UK,Uttarakhand,STATE
+UP,Uttar Pradesh,STATE
+WB,West Bengal,STATE

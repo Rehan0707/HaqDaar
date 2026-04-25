@@ -1,0 +1,3 @@
+title,desc,state,sector,max_income,target_occupation,target_category,min_age,max_age,scheme_type,portable
+Maharashtra Housing Assist,Housing subsidy after migration,Maharashtra,housing,350000,construction,SC|ST|OBC,18,65,STATE,yes
+National Health Protection,Primary health coverage,India,health,500000,all,all,0,120,CENTRAL,true
