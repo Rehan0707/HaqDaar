@@ -1,193 +1,521 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portable Welfare Access System</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Cinzel:wght@400;500&family=Manrope:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaqDaar | Portable Welfare Access</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Cinzel:wght@400;500;600&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-      :root {
-        --bg: #060606;
-        --panel: #0b0b0b;
-        --gold: #b69458;
-        --gold-soft: #8d7447;
-        --ivory: #efe8dc;
-        --text: #ddd2bf;
-        --muted: #667184;
-        --line: rgba(182, 148, 88, 0.35);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-          radial-gradient(1200px 700px at 25% 28%, rgba(190, 143, 61, 0.18), transparent 50%),
-          linear-gradient(#070707, #040404);
-        color: var(--text);
-        font-family: "Cormorant Garamond", serif;
-      }
-
-      .wrap {
-        width: min(1400px, 92vw);
-        margin: 42px auto;
-        border: 1px solid var(--line);
-        background: linear-gradient(90deg, rgba(182, 148, 88, 0.06), rgba(7, 7, 7, 0.96) 38%);
-        display: grid;
-        grid-template-columns: 35% 65%;
-        min-height: 86vh;
-      }
-
-      .left {
-        border-right: 1px solid var(--line);
-        position: relative;
-        padding: 48px 64px;
-        background:
-          linear-gradient(
-            90deg,
-            transparent 0,
-            transparent calc(100% - 1px),
-            rgba(182, 148, 88, 0.12) calc(100% - 1px),
-            rgba(182, 148, 88, 0.12)
-          ),
-          repeating-linear-gradient(
-            90deg,
-            rgba(182, 148, 88, 0.12) 0 1px,
-            transparent 1px 64px
-          ),
-          radial-gradient(700px 420px at 50% 40%, rgba(204, 146, 42, 0.16), transparent 60%);
-      }
-
-      .problem {
-        position: absolute;
-        left: 50%;
-        top: 52%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-      }
-
-      .label {
-        margin: 0 0 28px;
-        font-family: "Manrope", sans-serif;
-        letter-spacing: 0.45em;
-        font-size: 14px;
-        color: var(--muted);
-        text-transform: uppercase;
-      }
-
-      .number {
-        margin: 0;
-        color: var(--ivory);
-        font-family: "Cinzel", serif;
-        font-size: clamp(120px, 16vw, 240px);
-        line-height: 0.9;
-      }
-
-      .label.bottom {
-        margin-top: 26px;
-        color: #9f9688;
-      }
-
-      .right {
-        padding: 78px 88px 72px;
-        position: relative;
-      }
-
-      .title {
-        margin: 28px 0 32px;
-        font-family: "Cinzel", serif;
-        color: var(--ivory);
-        font-size: clamp(44px, 6vw, 90px);
-        line-height: 1.06;
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-      }
-
-      .section-tag {
-        margin: 0 0 14px;
-        color: #6b7e95;
-        font-size: 14px;
-        font-family: "Manrope", sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 0.35em;
-      }
-
-      p {
-        margin: 0;
-        max-width: 44ch;
-        font-size: clamp(24px, 2.2vw, 52px);
-        line-height: 1.45;
-        color: var(--text);
-      }
-
-      .build {
-        margin-top: 42px;
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
-        padding: 30px 0 34px;
-        background: linear-gradient(100deg, rgba(182, 148, 88, 0.13), rgba(8, 8, 8, 0) 45%);
-      }
-
-      @media (max-width: 980px) {
-        .wrap {
-          grid-template-columns: 1fr;
+        :root {
+            --bg: #060606;
+            --panel: #0b0b0b;
+            --gold: #b69458;
+            --gold-bright: #d4af37;
+            --gold-muted: rgba(182, 148, 88, 0.3);
+            --ivory: #efe8dc;
+            --text: #ddd2bf;
+            --muted: #667184;
+            --white: #ffffff;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .left {
-          min-height: 360px;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        .right {
-          padding: 44px 30px 48px;
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(182, 148, 88, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(182, 148, 88, 0.05) 0%, transparent 50%),
+                var(--bg);
         }
 
-        .problem {
-          position: static;
-          transform: none;
-          margin-top: 16px;
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ivory);
         }
-      }
+
+        .sans {
+            font-family: 'Manrope', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        /* Layout */
+        .app-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--panel);
+            border-right: 1px solid var(--gold-muted);
+            padding: 60px 40px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 2rem;
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--gold-muted);
+            padding-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-family: 'Manrope', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+        }
+
+        select, input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--gold-muted);
+            color: var(--ivory);
+            padding: 12px 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s var(--ease);
+        }
+
+        select:focus, input:focus {
+            border-bottom-color: var(--gold);
+        }
+
+        option {
+            background: var(--panel);
+            color: var(--text);
+        }
+
+        .btn-search {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 18px;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: all 0.4s var(--ease);
+        }
+
+        .btn-search:hover {
+            background: var(--gold);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(182, 148, 88, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 80px;
+            max-width: 1200px;
+        }
+
+        .results-header {
+            margin-bottom: 60px;
+        }
+
+        .results-header h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        /* Scheme Card */
+        .scheme-card {
+            background: rgba(182, 148, 88, 0.02);
+            border: 1px solid var(--gold-muted);
+            padding: 40px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s var(--ease);
+        }
+
+        .scheme-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            background: rgba(182, 148, 88, 0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .scheme-card .category {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .scheme-card h3 {
+            font-size: 1.4rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            min-height: 3.6em;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .badge.fully_portable {
+            background: var(--gold);
+            color: var(--bg);
+            font-weight: 600;
+        }
+
+        .badge.portable_with_transfer {
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .badge.not_portable {
+            border: 1px solid var(--muted);
+            color: var(--muted);
+        }
+
+        /* Detail Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 600px;
+            height: 100vh;
+            background: var(--panel);
+            z-index: 100;
+            padding: 100px 60px;
+            border-left: 1px solid var(--gold-muted);
+            transform: translateX(100%);
+            transition: transform 0.6s var(--ease);
+            overflow-y: auto;
+        }
+
+        .overlay.active {
+            transform: translateX(0);
+        }
+
+        .overlay-close {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: var(--gold);
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.2em;
+        }
+
+        .overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .detail-section {
+            margin-bottom: 40px;
+        }
+
+        .detail-label {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .detail-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* Loading & Empty States */
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+            display: none;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 0;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--gold-muted);
+            }
+            .overlay {
+                width: 100%;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <main class="wrap">
-      <aside class="left">
-        <div class="problem">
-          <p class="label">Problem</p>
-          <h2 class="number">09</h2>
-          <p class="label bottom">Statement</p>
-        </div>
-      </aside>
+</head>
+<body>
+    <div class="loading" id="loadingBar"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar Filter -->
+        <aside class="sidebar">
+            <h1 class="logo">HaqDaar</h1>
+            
+            <form id="searchForm">
+                <div class="form-group">
+                    <label>Current State</label>
+                    <select id="old_state" required>
+                        <option value="BR">Bihar</option>
+                        <option value="MH">Maharashtra</option>
+                        <option value="UP">Uttar Pradesh</option>
+                        <option value="MP">Madhya Pradesh</option>
+                        <option value="GJ">Gujarat</option>
+                        <option value="KA">Karnataka</option>
+                        <option value="ALL">All India (Central)</option>
+                    </select>
+                </div>
 
-      <section class="right">
-        <p class="section-tag">Context</p>
-        <h1 class="title">Portable Welfare<br />Access System</h1>
-        <p>
-          Welfare schemes in India are largely tied to the state or district where you registered.
-          When someone migrates for work, they often lose access to benefits they're entitled to.
-          Not because they're ineligible, but because the systems don't talk to each other and
-          nobody helped them navigate the transfer. Migrant workers are already the most vulnerable
-          group. Losing welfare on top of relocation is genuinely harmful.
-        </p>
+                <div class="form-group">
+                    <label>Migrating To</label>
+                    <select id="new_state" required>
+                        <option value="MH">Maharashtra</option>
+                        <option value="BR">Bihar</option>
+                        <option value="GJ">Gujarat</option>
+                        <option value="KA">Karnataka</option>
+                        <option value="TN">Tamil Nadu</option>
+                        <option value="DL">Delhi</option>
+                    </select>
+                </div>
 
-        <div class="build">
-          <p class="section-tag">What Teams Should Build</p>
-          <p>
-            A unified access layer that lets someone find and claim their benefits regardless of
-            where they currently are. Portability without bureaucratic dead ends.
-          </p>
+                <div class="form-group">
+                    <label>Monthly Income (₹)</label>
+                    <input type="number" id="annual_income" value="20000" step="1000">
+                </div>
+
+                <div class="form-group">
+                    <label>Occupation</label>
+                    <select id="occupation">
+                        <option value="construction">Construction Worker</option>
+                        <option value="agriculture">Agricultural Laborer</option>
+                        <option value="domestic">Domestic Worker</option>
+                        <option value="all">Other / General</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Social Category</label>
+                    <select id="social_category">
+                        <option value="OBC">OBC</option>
+                        <option value="SC">SC</option>
+                        <option value="ST">ST</option>
+                        <option value="GEN">General</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="age" value="25" min="0" max="120">
+                </div>
+
+                <button type="submit" class="btn-search">Identify Schemes</button>
+            </form>
+        </aside>
+
+        <!-- Main Results Area -->
+        <main class="main-content">
+            <header class="results-header">
+                <p class="sans">Dashboard</p>
+                <h2 id="resultTitle">Welfare Discovery</h2>
+                <p id="resultCount" class="sans" style="color: var(--gold)"></p>
+            </header>
+
+            <div class="results-grid" id="resultsGrid">
+                <!-- Cards will be injected here -->
+                <div class="empty-state">Adjust filters and search to discover eligible schemes.</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detail Overlay -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-close" onclick="closeOverlay()">[ Close ]</div>
+        <div id="overlayContent">
+            <!-- Content injected here -->
         </div>
-      </section>
-    </main>
-  </body>
+    </div>
+
+    <script>
+        const form = document.getElementById('searchForm');
+        const resultsGrid = document.getElementById('resultsGrid');
+        const loadingBar = document.getElementById('loadingBar');
+        const resultCountText = document.getElementById('resultCount');
+        const overlay = document.getElementById('overlay');
+        const overlayContent = document.getElementById('overlayContent');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading
+            loadingBar.style.display = 'block';
+            resultsGrid.style.opacity = '0.5';
+
+            const payload = {
+                old_state: document.getElementById('old_state').value,
+                new_state: document.getElementById('new_state').value,
+                annual_income: parseFloat(document.getElementById('annual_income').value) * 12, // Convert to annual
+                occupation: document.getElementById('occupation').value,
+                social_category: document.getElementById('social_category').value,
+                gender: "ANY",
+                age: parseInt(document.getElementById('age').value)
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/schemes/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                renderResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                resultsGrid.innerHTML = '<div class="empty-state">API Error. Please ensure the backend is running.</div>';
+            } finally {
+                loadingBar.style.display = 'none';
+                resultsGrid.style.opacity = '1';
+            }
+        });
+
+        function renderResults(data) {
+            const schemes = data.eligible_schemes || [];
+            resultCountText.innerText = `${schemes.length} Schemes Identified`;
+            
+            if (schemes.length === 0) {
+                resultsGrid.innerHTML = '<div class="empty-state">No schemes found matching these criteria.</div>';
+                return;
+            }
+
+            resultsGrid.innerHTML = schemes.map(scheme => `
+                <div class="scheme-card" onclick='showDetails(${JSON.stringify(scheme).replace(/'/g, "&apos;")})'>
+                    <span class="category">${scheme.category || 'General Welfare'}</span>
+                    <h3>${scheme.scheme_name}</h3>
+                    <div class="badge ${scheme.portability_type.toLowerCase()}">
+                        ${scheme.portability_type.replace(/_/g, ' ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showDetails(scheme) {
+            overlayContent.innerHTML = `
+                <p class="sans">${scheme.jurisdiction_type} | ${scheme.state_code || 'ALL INDIA'}</p>
+                <h2>${scheme.scheme_name}</h2>
+                
+                <div class="detail-section">
+                    <span class="detail-label">Description</span>
+                    <div class="detail-content">${scheme.description || 'No description available for this scheme.'}</div>
+                </div>
+
+                <div class="detail-section">
+                    <span class="detail-label">Portability Status</span>
+                    <div class="detail-content">
+                        <strong>${scheme.portability_type.replace(/_/g, ' ')}</strong>
+                        <p style="font-size: 1rem; margin-top: 10px; color: var(--muted)">
+                            ${scheme.is_portable ? 
+                                'This scheme can be accessed or transferred to your new state.' : 
+                                'This scheme is restricted to the state of origin.'}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <span class="detail-label">Source</span>
+                    <div class="detail-content" style="font-size: 0.9rem; color: var(--muted)">
+                        Dataset: ${scheme.source_dataset}<br>
+                        Reference: ${scheme.scheme_id}
+                    </div>
+                </div>
+            `;
+            overlay.classList.add('active');
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+        }
+
+        // Close overlay on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeOverlay();
+        });
+    </script>
+</body>
 </html>
